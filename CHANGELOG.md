@@ -35,5 +35,9 @@ path for Clever Cloud.
 
 ### Changed
 
+- `EMAIL_BACKEND` is now read from the environment instead of being hardcoded to
+  SendGrid, and `SENDGRID_API_KEY` defaults to an empty string. Production no
+  longer refuses to start without a SendGrid account, and any Django or anymail
+  backend can be used.
 - `.dockerignore` now also excludes `/static` and `/htmlcov` from the build
   context.
