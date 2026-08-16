@@ -1,0 +1,20 @@
+{
+  "apps": [
+    {
+      "app_id": "app_4dfbc9fd-a229-445f-ba9b-72bd557e266a",
+      "org_id": "orga_c09e1b90-41d1-4753-b995-32656f68e18b",
+      "deploy_url": "https://github.com/alexandre-petitjean/ethical-ad-server.git",
+      "git_ssh_url": "https://github.com/alexandre-petitjean/ethical-ad-server.git",
+      "name": "ethical-ad-django",
+      "alias": "web"
+    },
+    {
+      "app_id": "app_7f751318-9ab1-4ba6-a8c4-11169a514cd8",
+      "org_id": "orga_c09e1b90-41d1-4753-b995-32656f68e18b",
+      "deploy_url": "https://push-n3-par-clevercloud-customers.services.clever-cloud.com/app_7f751318-9ab1-4ba6-a8c4-11169a514cd8.git",
+      "git_ssh_url": "git+ssh://git@push-n3-par-clevercloud-customers.services.clever-cloud.com/app_7f751318-9ab1-4ba6-a8c4-11169a514cd8.git",
+      "name": "ethical-ad-migrate",
+      "alias": "migrate"
+    }
+  ]
+}
