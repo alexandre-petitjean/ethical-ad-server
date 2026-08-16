@@ -157,6 +157,14 @@ AWS_ACCESS_KEY_ID = env("AWS_ACCESS_KEY_ID", default="")
 AWS_SECRET_ACCESS_KEY = env("AWS_SECRET_ACCESS_KEY", default="")
 AWS_STORAGE_BUCKET_NAME = env("AWS_STORAGE_BUCKET_NAME", default="")
 AWS_QUERYSTRING_AUTH = env.bool("AWS_QUERYSTRING_AUTH", default=False)
+# Required by S3-compatible object stores that aren't AWS (eg. Clever Cloud Cellar,
+# MinIO, Scaleway). django-storages reads these from the Django settings rather
+# than the environment, so they have to be declared here. Leaving them unset
+# preserves the default behavior against AWS S3 itself.
+AWS_S3_ENDPOINT_URL = env("AWS_S3_ENDPOINT_URL", default=None)
+AWS_S3_REGION_NAME = env("AWS_S3_REGION_NAME", default=None)
+# Some S3-compatible stores only support path-style addressing ("path")
+AWS_S3_ADDRESSING_STYLE = env("AWS_S3_ADDRESSING_STYLE", default=None)
 # This default is true on AWS but false by default on Azure
 AWS_S3_FILE_OVERWRITE = False
 AWS_DATA_STORAGE_BUCKET_NAME = env("AWS_DATA_STORAGE_BUCKET_NAME", default="")

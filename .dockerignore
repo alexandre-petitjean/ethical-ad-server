@@ -16,3 +16,5 @@
 /.venv
 /media
 node_modules
+/static
+/htmlcov
