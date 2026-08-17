@@ -11,8 +11,19 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterUniqueTogether(
-            name='useradvertisermember',
-            unique_together={('user', 'advertiser')},
+        # `adserver_auth_user_advertisers` is the implicit through table Django
+        # created for the original `User.advertisers` ManyToManyField, so it
+        # already carries a UNIQUE (user_id, advertiser_id) constraint. Migration
+        # 0009 only adopted the table into an explicit through model via
+        # SeparateDatabaseAndState, without touching the database. Issuing the
+        # constraint again fails on PostgreSQL with DuplicateTable; only the
+        # migration state needs to catch up.
+        migrations.SeparateDatabaseAndState(
+            state_operations=[
+                migrations.AlterUniqueTogether(
+                    name='useradvertisermember',
+                    unique_together={('user', 'advertiser')},
+                ),
+            ],
         ),
     ]
