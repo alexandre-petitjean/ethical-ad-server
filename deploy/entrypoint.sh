@@ -141,6 +141,15 @@ start_web() {
 start_worker() {
     download_ip_databases
 
+    # A celery worker listens on no port, and Clever Cloud fails the deployment
+    # of any non-task application when nothing answers on
+    # CC_DOCKER_EXPOSED_HTTP_PORT ("Nothing listening on 0.0.0.0:8080").
+    # This tiny responder exists only to satisfy that check.
+    if [ "${WORKER_HTTP_HEALTHCHECK:-false}" = "true" ]; then
+        log "Starting health check responder on :${PORT}"
+        python /app/deploy/healthcheck_server.py "${PORT}" &
+    fi
+
     local cmd=(
         celery --app=config.celery_app.app worker
         --loglevel="${CELERY_LOG_LEVEL:-INFO}"
