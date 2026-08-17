@@ -2,20 +2,27 @@
 #
 # Entrypoint for the production image.
 #
-# The first argument selects the process to run. On Clever Cloud, set it with
-# CC_RUN_COMMAND (or CC_DOCKER_CMD) so the three applications share one image:
+# The process to run is selected by the PROCESS_TYPE environment variable, or
+# by the first argument when that variable is unset:
 #
-#   web     gunicorn serving config.wsgi
+#   web     gunicorn serving config.wsgi (the image default)
 #   worker  celery worker
 #   beat    celery beat  -- run exactly ONE instance, never scale it horizontally
 #   migrate apply migrations and exit (suitable for a Clever Task)
 #   manage  run any manage.py command, e.g. `manage createsuperuser`
 #
 # Anything else is executed verbatim, so `docker run <image> bash` still works.
+#
+# PROCESS_TYPE deliberately takes precedence over the argument: on Clever
+# Cloud's Docker runtime, CC_RUN_COMMAND does NOT override an image's
+# ENTRYPOINT/CMD, so the CMD below would always win and every application would
+# start a web server. Selecting the process through the environment is the only
+# thing that works there. Locally, `docker run <image> worker` still does what
+# it looks like, because PROCESS_TYPE is unset.
 
 set -euo pipefail
 
-PROCESS_TYPE="${1:-${PROCESS_TYPE:-web}}"
+PROCESS_TYPE="${PROCESS_TYPE:-${1:-web}}"
 
 # Clever Cloud tells the container which port to listen on; 8080 is its default.
 PORT="${CC_DOCKER_EXPOSED_HTTP_PORT:-${PORT:-8080}}"
