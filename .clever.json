@@ -15,6 +15,14 @@
       "git_ssh_url": "git+ssh://git@push-n3-par-clevercloud-customers.services.clever-cloud.com/app_7f751318-9ab1-4ba6-a8c4-11169a514cd8.git",
       "name": "ethical-ad-migrate",
       "alias": "migrate"
+    },
+    {
+      "app_id": "app_eb217622-caac-48e3-a3e0-1d7f9f019910",
+      "org_id": "orga_c09e1b90-41d1-4753-b995-32656f68e18b",
+      "deploy_url": "https://push-n3-par-clevercloud-customers.services.clever-cloud.com/app_eb217622-caac-48e3-a3e0-1d7f9f019910.git",
+      "git_ssh_url": "git+ssh://git@push-n3-par-clevercloud-customers.services.clever-cloud.com/app_eb217622-caac-48e3-a3e0-1d7f9f019910.git",
+      "name": "ethical-ad-worker",
+      "alias": "worker"
     }
   ]
 }

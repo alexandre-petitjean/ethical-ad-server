@@ -141,14 +141,30 @@ start_web() {
 start_worker() {
     download_ip_databases
 
-    log "Starting celery worker"
-    exec celery --app=config.celery_app.app worker \
-        --loglevel="${CELERY_LOG_LEVEL:-INFO}" \
-        --concurrency="${CELERY_CONCURRENCY:-2}" \
-        --max-tasks-per-child "${CELERY_MAX_TASKS_PER_CHILD:-1000}" \
-        --without-gossip \
-        --without-mingle \
+    local cmd=(
+        celery --app=config.celery_app.app worker
+        --loglevel="${CELERY_LOG_LEVEL:-INFO}"
+        --concurrency="${CELERY_CONCURRENCY:-2}"
+        --max-tasks-per-child "${CELERY_MAX_TASKS_PER_CHILD:-1000}"
+        --without-gossip
+        --without-mingle
         --without-heartbeat
+    )
+
+    # CELERY_EMBED_BEAT runs the scheduler inside this worker, so a single
+    # application covers both roles. Only safe with exactly ONE worker instance:
+    # every embedded scheduler fires the whole beat schedule, so a second
+    # instance would run every periodic task twice. Keep the application at one
+    # instance with autoscaling off, or split beat into its own application
+    # (PROCESS_TYPE=beat) before scaling out.
+    if [ "${CELERY_EMBED_BEAT:-false}" = "true" ]; then
+        cmd+=(--beat --schedule="${CELERY_BEAT_SCHEDULE_FILE:-/tmp/celerybeat-schedule}")
+        log "Starting celery worker with embedded beat"
+    else
+        log "Starting celery worker"
+    fi
+
+    exec "${cmd[@]}"
 }
 
 start_beat() {
