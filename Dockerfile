@@ -38,9 +38,9 @@ RUN npm run build
 # ---------------------------------------------------------------------------
 # Stage 2 - python dependencies
 #
-# Only the "production" extra is installed. The "analyzer" extra is deliberately
-# left out: it pulls spaCy plus a ~30MB language model and would multiply the
-# image size. Add `--extra analyzer` here if ADSERVER_ANALYZER_BACKEND is set.
+# The "analyzer" extra pulls spaCy plus a ~30MB language model. It is required
+# as soon as ADSERVER_ANALYZER_BACKEND is set; drop it (and unset that variable)
+# to get a much smaller image.
 # ---------------------------------------------------------------------------
 FROM python:3.12-slim-bookworm AS builder
 
@@ -63,7 +63,7 @@ WORKDIR /app
 RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
     --mount=type=bind,source=uv.lock,target=uv.lock \
-    uv sync --frozen --no-dev --no-install-project --extra production
+    uv sync --frozen --no-dev --no-install-project --extra production --extra analyzer
 
 
 # ---------------------------------------------------------------------------
