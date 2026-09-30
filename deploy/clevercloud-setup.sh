@@ -161,15 +161,17 @@ clever deploy --alias migrate     # runs the migrations, then stops
 #
 #   clever restart --alias web
 
-# Make the media bucket publicly readable. Uploads are sent without an ACL and
-# URLs are unsigned (AWS_QUERYSTRING_AUTH=False), so without this policy every
-# ad image returns 403 AccessDenied. Never do this on the data bucket, which
-# holds private offer archives. Run it with the CELLAR_ADDON_KEY_ID/_SECRET
-# shown by `clever env --alias web` exported as AWS_ACCESS_KEY_ID/_SECRET:
+# Make the ad images of the media bucket publicly readable. Uploads are sent
+# without an ACL and their URLs are unsigned (AWS_QUERYSTRING_AUTH=False), so
+# without this policy every ad image returns 403 AccessDenied. Only images/ is
+# public: logos and payout attachments get presigned URLs instead (see
+# config/storage.py). Never do this on the data bucket, which holds private
+# offer archives. Run it with the CELLAR_ADDON_KEY_ID/_SECRET shown by
+# `clever env --alias web` exported as AWS_ACCESS_KEY_ID/_SECRET:
 #
 #   aws s3api put-bucket-policy \
 #       --endpoint-url "https://cellar-c2.services.clever-cloud.com" \
 #       --bucket "$BUCKET_MEDIA" \
-#       --policy '{"Version":"2012-10-17","Statement":[{"Sid":"PublicReadMedia",
+#       --policy '{"Version":"2012-10-17","Statement":[{"Sid":"PublicReadAdImages",
 #           "Effect":"Allow","Principal":"*","Action":"s3:GetObject",
-#           "Resource":"arn:aws:s3:::'"$BUCKET_MEDIA"'/*"}]}'
+#           "Resource":"arn:aws:s3:::'"$BUCKET_MEDIA"'/images/*"}]}'
