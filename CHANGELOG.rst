@@ -6,6 +6,39 @@ CHANGELOG
 .. This is included by docs/developer/changelog.rst
 
 
+Version v6.1.2
+--------------
+
+Fix a customer ETL issue related to the refactor in v6.1.0
+
+:Date: October 2, 2026
+
+ * @davidfischer: ETL Refactor fix (#1289)
+ * @dependabot[bot]: Bump virtualenv from 21.7.4 to 21.7.12 (#1286)
+
+
+Version v6.1.1
+--------------
+
+Fix an issue not caught in dev/test.
+
+:Date: September 30, 2026
+
+ * @davidfischer: Fix bid rate type (#1284)
+
+
+Version v6.1.0
+--------------
+
+A few minor bug fixes and add CORS permissions to the decision endpoint.
+
+:Date: September 30, 2026
+
+ * @davidfischer: Fix publisher bid rate (#1280)
+ * @davidfischer: Stripe permission fix (#1279)
+ * @davidfischer: Add CORS to the decision endpoint (#1251)
+
+
 Version v6.0.1
 --------------
 
